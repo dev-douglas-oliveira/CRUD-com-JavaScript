@@ -15,14 +15,26 @@ const criaNovaLinha = (nome, email) => {
 
 const tabela = document.querySelector("[data-tabela]"); // Percorre a árvore do DOM e seleciona a tabela
 
-const http = new XMLHttpRequest(); // Instancia o objeto XMLHttpRequest
-http.open("GET", "http://localhost:3000/profile"); // Abre a conexão com o servidor
-http.send(); // Envia a requisição
-http.onload = () => {
-    // Quando a resposta chegar, executa o código abaixo
-    const data = JSON.parse(http.response); //convertendo a resposta em um objeto JavaScript
+const listaClientes = () => {
+    const promise = new Promise((resolve, reject) => {
+        const http = new XMLHttpRequest(); // Instancia o objeto XMLHttpRequest
+        http.open("GET", "http://localhost:3000/profile"); // Abre a conexão com o servidor
+        http.onload = () => {
+            if (http.status >= 400) {
+                reject(JSON.parse(http.response));
+            } else {
+                resolve(JSON.parse(http.response));
+            }
+        };
+        http.send(); // Envia a requisição
+    });
+    console.log(promise);
+    return promise;
+};
+
+listaClientes().then((data) => {
     data.forEach((elemento) => {
         //
         tabela.appendChild(criaNovaLinha(elemento.nome, elemento.email)); // Adiciona a nova linha na tabela
     });
-};
+});
