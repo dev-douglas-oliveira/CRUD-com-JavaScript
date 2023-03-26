@@ -20,8 +20,16 @@ const criarCliente = (nome, email) => {
     });
 };
 
+const removeCliente = (id) => {
+    return fetch(`http://localhost:3000/profile/${id}`, {
+        method: "DELETE",
+    }).then((resposta) => {
+        return resposta.body;
+    });
+};
 //função que exporta as funções para serem usadas em outros arquivos
 export const clienteService = {
     listaClientes,
     criarCliente,
+    removeCliente,
 };
