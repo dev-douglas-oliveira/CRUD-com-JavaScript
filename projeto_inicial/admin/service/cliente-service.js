@@ -16,20 +16,9 @@ const criaNovaLinha = (nome, email) => {
 const tabela = document.querySelector("[data-tabela]"); // Percorre a árvore do DOM e seleciona a tabela
 
 const listaClientes = () => {
-    const promise = new Promise((resolve, reject) => {
-        const http = new XMLHttpRequest(); // Instancia o objeto XMLHttpRequest
-        http.open("GET", "http://localhost:3000/profile"); // Abre a conexão com o servidor
-        http.onload = () => {
-            if (http.status >= 400) {
-                reject(JSON.parse(http.response));
-            } else {
-                resolve(JSON.parse(http.response));
-            }
-        };
-        http.send(); // Envia a requisição
+    return fetch("http://localhost:3000/profile").then((resposta) => {
+        return resposta.json(); // Retorna a resposta em formato JSON
     });
-    console.log(promise);
-    return promise;
 };
 
 listaClientes().then((data) => {
