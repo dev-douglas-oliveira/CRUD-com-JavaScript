@@ -35,10 +35,27 @@ const detalhaCliente = (id) => {
     });
 };
 
+//função que atualiza um cliente através do id
+const atualizaCliente = (id, nome, email) => {
+    return fetch(`http://localhost:3000/profile/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            nome: nome,
+            email: email,
+        }),
+    }).then((resposta) => {
+        return resposta.body;
+    });
+};
+
 //função que exporta as funções para serem usadas em outros arquivos
 export const clienteService = {
     listaClientes,
     criarCliente,
     removeCliente,
     detalhaCliente,
+    atualizaCliente,
 };
