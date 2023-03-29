@@ -22,21 +22,31 @@ tabela.addEventListener("click", async (event) => {
     let ehBotaoDeletar =
         event.target.className == "botao-simples botao-simples--excluir"; // Verifica se o elemento clicado é um botão de deletar
     if (ehBotaoDeletar) {
-        const linhaCliente = event.target.closest("[data-id]"); // procuro o elemento mais próximo que tenha o atributo data-id
-        let id = linhaCliente.dataset.id; // Seleciona o id do cliente
-        await clienteService.removeCliente(id);
-        linhaCliente.remove(); // Remove a linha do cliente
+        try {
+            const linhaCliente = event.target.closest("[data-id]"); // procuro o elemento mais próximo que tenha o atributo data-id
+            let id = linhaCliente.dataset.id; // Seleciona o id do cliente
+            await clienteService.removeCliente(id);
+            linhaCliente.remove(); // Remove a linha do cliente
+        } catch (erro) {
+            console.log(erro);
+            window.location.href = "../telas/erro.html";
+        }
     }
 });
 
 // função para renderizar a tabela
 const render = async () => {
-    const listaClientes = await clienteService.listaClientes();
-    listaClientes.forEach((elemento) => {
-        tabela.appendChild(
-            criaNovaLinha(elemento.nome, elemento.email, elemento.id)
-        ); // Adiciona a nova linha na tabela
-    });
+    try {
+        const listaClientes = await clienteService.listaClientes();
+        listaClientes.forEach((elemento) => {
+            tabela.appendChild(
+                criaNovaLinha(elemento.nome, elemento.email, elemento.id)
+            ); // Adiciona a nova linha na tabela
+        });
+    } catch (erro) {
+        console.log(erro);
+        window.location.href = "../telas/erro.html";
+    }
 };
 
 render();
